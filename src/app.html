@@ -1,0 +1,416 @@
+<style>
+  :root {
+    --primary-color: #2ecc71;
+    --secondary-color: #3498db;
+    --accent-color: #f1c40f;
+    --dark-color: #0f1a26;
+    --light-color: #ecf0f1;
+    --glass-bg: rgba(255, 255, 255, 0.12);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  body { background: radial-gradient(circle at top left, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.05)), linear-gradient(135deg, var(--dark-color) 0%, #1a2a3a 100%); font-family: 'Poppins', sans-serif; color: var(--light-color); overflow-x: hidden; scroll-behavior: smooth; padding-top: 80px; line-height: 1.6; }
+  a { text-decoration: none !important; }
+  .navbar { background: rgba(15, 26, 38, 0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,.3); padding: 1rem 2rem; transition: var(--transition); }
+  .navbar.scrolled { padding: .7rem 2rem; }
+  .navbar-brand { font-size: 2rem; font-weight: 800; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 1px; }
+  .nav-hover { color: var(--light-color); font-weight: 600; padding: .7rem 1.5rem; position: relative; transition: var(--transition); font-size: 1.1rem; }
+  .nav-hover::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:0; height:3px; background:var(--accent-color); transition:var(--transition); }
+  .nav-hover:hover::after,.nav-hover.active::after{ width:70%; }
+  .nav-hover:hover{ color:var(--accent-color); }
+  .hero-section { min-height: calc(100vh - 80px); display:flex; align-items:center; position:relative; overflow:hidden; padding:2rem 0; }
+  #particles-js { position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1; }
+  .hero-content { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:2.5rem; }
+  .hero-text{ flex:1; padding-right:3rem; max-width:640px; }
+  .hero-text h1{ font-size:clamp(2.4rem, 4vw, 4.2rem); font-weight:800; background:linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip:text; background-clip:text; color:transparent; text-transform:uppercase; letter-spacing:2px; margin-bottom:1.1rem; line-height:1.15; }
+  .hero-text p{ font-size:clamp(1.05rem, 1.4vw, 1.4rem); color:rgba(236,240,241,.9); margin:1.3rem 0; font-weight:500; max-width:36rem; }
+  .hero-text #dynamic-text{ font-size:clamp(1.4rem, 2.4vw, 2.1rem); font-weight:700; color:var(--accent-color); min-height:70px; display:inline-block; margin-bottom:2rem; }
+  .profile-img{ width:100%; max-width:320px; aspect-ratio:1 / 1; border-radius:50%; border:8px solid var(--primary-color); box-shadow:0 15px 40px rgba(0,0,0,.4); transition:var(--transition); object-fit:cover; }
+  .profile-img:hover{ transform:scale(1.05) rotate(2deg); box-shadow:0 20px 50px rgba(0,0,0,.5); }
+  .social-icon{ color:var(--light-color); font-size:2.2rem; margin:0 1.5rem; transition:var(--transition); }
+  .social-icon:hover{ color:var(--secondary-color); transform:scale(1.2) translateY(-5px); }
+  .modern-btn{ background:linear-gradient(45deg, var(--primary-color), var(--secondary-color)); border:none; padding:.8rem 2.2rem; border-radius:30px; color:#fff; font-weight:600; transition:var(--transition); box-shadow:0 8px 20px rgba(0,0,0,.3); font-size:1.1rem; }
+  .modern-btn:hover{ transform:translateY(-6px) scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+  .modern-btn-outline{ background:transparent; border:2px solid var(--accent-color); color:var(--accent-color); }
+  .modern-btn-outline:hover{ background:var(--accent-color); color:var(--dark-color); }
+  .admin-login-btn{
+    padding:0.25rem 0.6rem;
+    font-size:0.75rem;
+    border-radius:999px;
+    border-width:1px;
+    opacity:0.45;
+    transition:var(--transition);
+  }
+  .admin-login-btn i{ font-size:0.8rem; }
+  .admin-login-btn:hover,.admin-login-btn:focus{ opacity:1; box-shadow:0 0 12px rgba(241,196,15,.4); }
+  section{ padding:7rem 0; scroll-margin-top:80px; }
+  .section-title{ font-size:3rem; font-weight:800; margin-bottom:3.5rem; text-align:center; background:linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip:text; background-clip:text; color:transparent; text-transform:uppercase; letter-spacing:1.5px; }
+  .section-title::after{ content:''; width:80px; height:5px; background:var(--accent-color); display:block; margin:.7rem auto; border-radius:2px; }
+  .glass-card{ background:var(--glass-bg); backdrop-filter:blur(15px); border:1px solid var(--glass-border); border-radius:20px; padding:2rem; box-shadow:0 10px 30px rgba(0,0,0,.3), 0 0 15px rgba(46,204,113,.1); transition:var(--transition); text-align:left; }
+  .glass-card:hover{ transform:translateY(-12px); box-shadow:0 15px 40px rgba(0,0,0,.4), 0 0 20px rgba(46,204,113,.2); }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.8), 0 0 30px rgba(46, 204, 113, 0.4); }
+  }
+
+  @keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .pulse-animation {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .glow-animation {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .skill-badge {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    padding: .7rem 1.3rem;
+    border-radius: 25px;
+    margin: .6rem;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .skill-badge:hover::before {
+    left: 100%;
+  }
+  .skill-badge:hover{ transform:scale(1.12) rotate(2deg); box-shadow:0 6px 18px rgba(0,0,0,.3); }
+  .skill-badge.highlighted{ background:var(--accent-color); color:var(--dark-color); }
+  .tech-container{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:.7rem; }
+  .tech-badge{ background:rgba(255,255,255,.18); padding:.4rem 1rem; border-radius:18px; font-size:1rem; font-weight:500; transition:var(--transition); cursor:pointer; box-shadow:0 3px 10px rgba(0,0,0,.15); }
+  .tech-badge:hover{ background:var(--accent-color); color:var(--dark-color); transform:scale(1.12); box-shadow:0 5px 15px rgba(241,196,15,.3); }
+  .tech-badge.highlighted{ background:var(--accent-color); color:var(--dark-color); }
+  .project-card h5{ font-size:1.4rem; font-weight:700; margin-bottom:.7rem; color:var(--light-color); }
+  .project-card p{ font-size:1rem; color:rgba(236,240,241,.8); margin-bottom:.7rem; line-height:1.5; }
+  .project-card .view-code-btn{ background:linear-gradient(45deg, var(--accent-color), #f39c12); color:var(--dark-color); padding:.5rem 1.2rem; border-radius:22px; font-size:1rem; font-weight:600; display:inline-flex; align-items:center; gap:.4rem; transition:var(--transition); box-shadow:0 6px 18px rgba(241,196,15,.4); }
+  .project-card .view-code-btn:hover{ transform:translateY(-4px) scale(1.05); box-shadow:0 10px 25px rgba(241,196,15,.5); }
+  .contact-item{ transition:var(--transition); border-radius:15px; padding:1.2rem; margin-bottom:1.2rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); }
+  .contact-item:hover{ transform:translateX(12px); background:rgba(255,255,255,.12); border-color:var(--primary-color); }
+  .form-control{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); color:var(--light-color); transition:var(--transition); border-radius:10px; padding:.8rem; }
+  .form-control:focus{ background:rgba(255,255,255,.12); border-color:var(--primary-color); box-shadow:0 0 15px rgba(46,204,113,.4); color:var(--light-color); }
+  .form-control::placeholder{ color:rgba(236,240,241,.6); }
+  footer{ background:rgba(15,26,38,.95); backdrop-filter:blur(10px); padding:4rem 0; border-top:1px solid var(--glass-border); }
+  .footer-link{ color:var(--light-color); transition:var(--transition); display:block; padding:.6rem 0; font-weight:500; }
+  .footer-link:hover{ color:var(--accent-color); transform:translateX(8px); }
+  a:focus, button:focus, .social-icon:focus, .modern-btn:focus{ outline:2px solid var(--accent-color); outline-offset:2px; }
+  @media (max-width: 992px){ .hero-text h1{ font-size:clamp(2.1rem, 3.4vw, 3.2rem);} .hero-text #dynamic-text{ font-size:1.6rem;} .hero-content{ flex-direction:column; text-align:center;} .hero-text{ padding-right:0; margin-bottom:2.5rem; max-width:none;} section{ padding:5rem 0;} .project-card .tech-container{ justify-content:center; } }
+  @media (max-width: 768px){ .navbar{ padding:1rem;} .hero-section{ padding:3rem 1rem;} .hero-text h1{ font-size:2.3rem;} .hero-text p, .hero-text #dynamic-text{ font-size:1.15rem;} .modern-btn, .modern-btn-outline{ width:100%; margin-bottom:1.2rem;} .project-card h5{ font-size:1.2rem;} .project-card p{ font-size:.95rem;} }
+  @media (max-width: 576px){ .hero-text h1{ font-size:2rem;} .hero-text p, .hero-text #dynamic-text{ font-size:1.05rem;} .project-card .tech-container{ flex-direction:column; align-items:center; gap:.4rem;} .section-title{ font-size:2.4rem;} }
+  ::-webkit-scrollbar{ width:12px; }
+  ::-webkit-scrollbar-track{ background:var(--dark-color); border-radius:6px; }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(var(--primary-color), var(--secondary-color)); border-radius:6px; border:2px solid var(--dark-color); }
+</style>
+
+<!-- Navbar -->
+<nav id="mainNavbar" class="navbar navbar-expand-lg fixed-top" role="navigation">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img loading="lazy" src="/assets/image/sameer.jpg" alt="Logo" width="45" class="me-3 rounded-circle">Shaik Mohammed Sameer
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link nav-hover" href="#home"><i class="fas fa-home me-2"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link nav-hover" href="#skills"><i class="fas fa-code me-2"></i> Skills</a></li>
+        <li class="nav-item"><a class="nav-link nav-hover" href="#education"><i class="fas fa-graduation-cap me-2"></i> Education</a></li>
+        <li class="nav-item"><a class="nav-link nav-hover" href="#projects"><i class="fas fa-project-diagram me-2"></i> Projects</a></li>
+        <li class="nav-item"><a class="nav-link nav-hover" href="#achievement"><i class="fas fa-trophy me-2"></i> Achievements</a></li>
+        <li class="nav-item"><a class="nav-link nav-hover" href="#contact"><i class="fas fa-paper-plane me-2"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section" role="main">
+  <div id="particles-js"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text" data-aos="fade-up">
+        <h1 id="profileName">Shaik Mohammed Sameer</h1>
+        <p id="profileHeadline">B.Tech CSE | KL University</p>
+        <h3 id="dynamic-text"></h3>
+        <div class="d-flex gap-4 my-4" data-aos="fade-up" data-aos-delay="200">
+          <a id="profileLinkedin" href="https://linkedin.com/in/shaik-mohammed-sameer-6802bb2a0/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          <a id="profileGithub" href="https://github.com/ShaikMohammedSameer3903" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="d-flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
+          <a href="#contact" class="modern-btn"><i class="fas fa-paper-plane me-2"></i>Contact Me</a>
+          <a href="#projects" class="modern-btn modern-btn-outline"><i class="fas fa-code me-2"></i>View Projects</a>
+          <a id="resumeDownloadLink" href="/assets/resumea.pdf" class="modern-btn" download><i class="fas fa-file-download me-2"></i>Download Resume</a>
+        </div>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="200">
+        <img loading="lazy" src="/assets/image/sameer.jpg" alt="Profile" class="profile-img floating">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills">
+  <div class="container">
+    <h2 class="section-title pulse-animation" data-aos="fade-up">Technical Skills</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in">
+        <div class="glass-card">
+          <h4 class="text-center mb-4" style="color: var(--light-color); font-weight: 700;">Programming Languages</h4>
+          <div id="skillsProgramming" class="d-flex flex-wrap justify-content-center"></div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="glass-card">
+          <h4 class="text-center mb-4" style="color: var(--light-color); font-weight: 700;">Web Development</h4>
+          <div id="skillsWeb" class="d-flex flex-wrap justify-content-center"></div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="glass-card">
+          <h4 class="text-center mb-4" style="color: var(--light-color); font-weight: 700;">Others</h4>
+          <div id="skillsOther" class="d-flex flex-wrap justify-content-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Education Section -->
+<section id="education">
+  <div class="container">
+    <h2 class="section-title pulse-animation" data-aos="fade-up">Education</h2>
+    <div class="row justify-content-center g-4">
+      <div class="col-md-6" data-aos="zoom-in">
+        <div class="glass-card">
+          <div class="d-flex align-items-center">
+            <img loading="lazy" src="/assets/image/klu.jpg" alt="KL University" width="90" class="rounded-circle me-4">
+            <div>
+              <h4 style="font-weight: 700;">KL University, Vijayawada</h4>
+              <p>B.Tech in Computer Science and Engineering</p>
+              <p>August 2023 - Present | CGPA: 9.16/10</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">
+        <div class="glass-card">
+          <div class="d-flex align-items-center">
+            <img loading="lazy" src="/assets/image/srichaitanya.jpeg" alt="Sri Chaitanya" width="90" class="rounded-circle me-4">
+            <div>
+              <h4 style="font-weight: 700;">Sri Chaitanya College</h4>
+              <p>Intermediate, MPC</p>
+              <p>June 2021 - May 2023 | 84%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Projects Section -->
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Projects</h2>
+    <div id="projectsGrid" class="row g-4"></div>
+  </div>
+</section>
+
+<section id="achievement">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Achievements & Certifications</h2>
+    <div class="row g-4">
+      <!-- ACE Multicloud Network Associate -->
+      <div class="col-md-6 col-lg-4" data-aos="zoom-in">
+        <div class="glass-card p-3 h-100">
+          <h5 style="font-weight: 700;">Aviatrix Certified Engineer (ACE) Multicloud Network Associate</h5>
+          <p>Issued: 2025</p>
+          <p>Credential ID: ACE-MNA-2025</p>
+          <span class="badge bg-primary rounded-pill">Networking</span>
+          <span class="badge bg-success rounded-pill">Cloud</span>
+        </div>
+      </div>
+
+      <!-- Oracle Cloud Infrastructure 2025 Certified Developer Professional -->
+      <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="glass-card p-3 h-100">
+          <h5 style="font-weight: 700;">Oracle Cloud Infrastructure 2025 Certified Developer Professional</h5>
+          <p>Issued: 2025</p>
+          <p>Credential ID: OCI-CDP-2025</p>
+          <span class="badge bg-primary rounded-pill">Cloud</span>
+          <span class="badge bg-info rounded-pill">Development</span>
+        </div>
+      </div>
+
+      <!-- Oracle Cloud Infrastructure 2025 Certified Architect Associate -->
+      <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="glass-card p-3 h-100">
+          <h5 style="font-weight: 700;">Oracle Cloud Infrastructure 2025 Certified Architect Associate</h5>
+          <p>Issued: 2025</p>
+          <p>Credential ID: OCI-CAA-2025</p>
+          <span class="badge bg-primary rounded-pill">Cloud</span>
+          <span class="badge bg-warning rounded-pill">Architecture</span>
+        </div>
+      </div>
+
+      <!-- Salesforce AI Associate Certification -->
+      <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="glass-card p-3 h-100">
+          <h5 style="font-weight: 700;">Salesforce AI Associate Certification</h5>
+          <p>Issued: 2024</p>
+          <p>Credential ID: SF-AI-ASSOC-2024</p>
+          <span class="badge bg-danger rounded-pill">AI</span>
+          <span class="badge bg-info rounded-pill">Salesforce</span>
+        </div>
+      </div>
+
+      <!-- Cambridge English Written Lingual Skill Exam -->
+      <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="glass-card p-3 h-100">
+          <h5 style="font-weight: 700;">Cambridge English Written Lingual Skill Exam</h5>
+          <p>Issued: 2023</p>
+          <p>Level: C2 Proficiency</p>
+          <span class="badge bg-success rounded-pill">Language</span>
+          <span class="badge bg-secondary rounded-pill">English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+  <div class="container">
+    <h2 class="section-title pulse-animation" data-aos="fade-up">Get In Touch</h2>
+    <div class="row g-4">
+      <div class="col-lg-4" data-aos="fade-up">
+        <div class="glass-card p-4 h-100">
+          <h4 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">Contact Info</h4>
+          <div class="contact-item">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-envelope me-3 fa-lg" style="color: var(--primary-color);"></i>
+              <a id="contactEmail" href="mailto:shaiksameer3909sam@gmail.com" style="color: var(--light-color);">shaiksameer3909sam@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-phone me-3 fa-lg" style="color: var(--primary-color);"></i>
+              <a id="contactPhone" href="tel:+919030259526" style="color: var(--light-color);">+91 9030259526</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-map-marker-alt me-3 fa-lg" style="color: var(--primary-color);"></i>
+              <span id="contactLocation">Vijayawada, Andhra Pradesh, India</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+        <div class="glass-card p-4 h-100">
+          <h4 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">Send Me a Message</h4>
+          <form id="contactForm" action="" method="POST" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+              </div>
+              <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+              </div>
+              <div class="col-12">
+                <input type="text" name="subject" class="form-control" placeholder="Subject">
+              </div>
+              <div class="col-12">
+                <textarea name="message" class="form-control" rows="6" placeholder="Your Message" required></textarea>
+              </div>
+              <div class="visually-hidden" aria-hidden="true">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="modern-btn">
+                  <i class="fas fa-paper-plane me-2"></i>Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+          <div id="formStatus" class="mt-3 text-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-lg-4" data-aos="fade-up">
+        <h4 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">About Me</h4>
+        <p id="footerAbout">I am Shaik Mohammed Sameer, a B.Tech CSE student at KL University, skilled in web development and programming. I enjoy building scalable solutions using modern technologies like React.js, Spring Boot, and Firebase. I possess strong logical and analytical skills, with experience leading a team of 3 in the Farmer-Friendly Platform project, demonstrating teamwork and communication.</p>
+        <h5 style="color: var(--light-color); font-weight: 600; margin-top: 1.5rem;">Languages</h5>
+        <p>Urdu (Mother Tongue), Telugu (Native), English (Fluent), Hindi (Fluent)</p>
+      </div>
+      <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <h5 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">Quick Links</h5>
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#skills" class="footer-link">Skills</a>
+        <a href="#education" class="footer-link">Education</a>
+        <a href="#projects" class="footer-link">Projects</a>
+      </div>
+      <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <h5 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">More Links</h5>
+        <a href="#achievement" class="footer-link">Achievements</a>
+        <a href="#contact" class="footer-link">Contact</a>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <h5 style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700;" class="mb-4">Connect with Me</h5>
+        <div class="d-flex gap-4 mt-4 justify-content-center">
+          <a id="footerLinkedin" href="https://linkedin.com/in/shaik-mohammed-sameer-6802bb2a0/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          <a id="footerGithub" href="https://github.com/ShaikMohammedSameer3903" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+    <p class="text-center mt-4" style="font-size: 0.9rem;">© 2025 Shaik Mohammed Sameer | All Rights Reserved</p>
+  </div>
+</footer>

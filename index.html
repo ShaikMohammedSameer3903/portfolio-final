@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Shaik Mohammed Sameer's portfolio. Full-stack developer with skills in React, Java, Spring Boot, SQL." />
+    <meta name="keywords" content="Shaik Mohammed Sameer, portfolio, React developer, Spring Boot, Java, KL University" />
+    <meta name="author" content="Shaik Mohammed Sameer" />
+    <link rel="icon" href="/assets/image/favicon.ico" />
+    <title>Shaik Mohammed Sameer - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Suppress network errors before React loads
+      (function() {
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const suppressPatterns = [
+          'Failed to load resource',
+          '500 (Internal Server Error)',
+          '401 (Unauthorized)',
+          'GET http://localhost:5173/api/',
+          'api/public/',
+          'api/admin/',
+          'Failed to fetch',
+          'NetworkError',
+          'No routes matched location'
+        ];
+        
+        function shouldSuppress(msg) {
+          const str = String(msg || '');
+          return suppressPatterns.some(p => str.includes(p));
+        }
+        
+        console.error = function(...args) {
+          if (args.some(shouldSuppress)) return;
+          originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+          if (args.some(shouldSuppress)) return;
+          originalWarn.apply(console, args);
+        };
+        
+        // Suppress unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(e) {
+          const reason = String(e.reason || '');
+          if (shouldSuppress(reason)) {
+            e.preventDefault();
+            return false;
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
