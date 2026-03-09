@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "cors": "^2.8.5"
-=======
   "name": "sameer-portfolio-frontend",
   "version": "1.0.0",
   "private": true,
@@ -22,9 +18,8 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.4.0",
-    "tailwindcss": "^3.4.0",
+    "tailwindcss": "3.4.0",
     "postcss": "^8.4.32",
     "autoprefixer": "^10.4.16"
->>>>>>> master
   }
 }
